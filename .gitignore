@@ -1,2 +1,8 @@
 packrat/lib*/
 .Rproj.user
+*.csv
+!Metadata_2.csv
+*.pdf
+*.eps
+*.doc
+*.tiff

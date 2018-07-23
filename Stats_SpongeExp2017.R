@@ -1,8 +1,6 @@
-### Phyloseq Sponge 16S ###
-
-### Sponge Experiment - Microbiome QIIME2 ####
-
-setwd("~/Documents/3_Holobiont_Stability/Stats/QIIME2")
+####### Statistical Analysis ###########
+# Glasl et al. (2018) Exploring the diversity-stability paradigm using sponge microbial communities. Scientific Reports 8:8425
+# doi: DOI:10.1038/s41598-018-26641-9
 
 library(phyloseq)
 library(ggplot2)
@@ -10,67 +8,17 @@ library(dplyr)
 library(tidyr)
 library(tibble)
 
-### load data ####
-# load OTU table (family level, OTUs in columns, samples in columns)
-OTU_table<-read.csv('otu_table5976.csv', header = TRUE, sep = ",", dec = ".", strip.white = TRUE)
-head(OTU_table)
-str(OTU_table)
-
-OTU_table_T<-read.csv('otu_table5976_T.csv', header = TRUE, sep = ",", dec = ".", strip.white = TRUE)
-head(OTU_table_T) # OTUs in rows
-str(OTU_table_T)
-
+#### load PHYLOSEQ_TABLE ####
+load(file="PHYLOSEQ_TABLE.RData")
 METADATA<-read.csv("Metadata_2.csv", header = TRUE, sep = ",")
-head(METADATA)
-levels(METADATA$Host)
 
-TAXADATA<-read.csv("taxonomy.csv", header = TRUE, sep = ",")
-head(TAXADATA)
-
-# join datasets
-library(dplyr)
-library(tidyr)
-OTU_table_new<-right_join(METADATA, OTU_table, by="Sample_ID")
-levels(OTU_table_new$Host)
-
-### prep Phyloseq Table ####
-# Taxa table
-TAXA_TABLE<-as.data.frame(TAXADATA[,1])
-rownames(TAXADATA)<-TAXADATA[,1]
-TAXA_TABLE_split<-TAXADATA %>% separate(Taxon, c("Domain","Phylum","Class","Order","Family","Genus","Species"), sep=";", remove=FALSE) 
-TAXA_TABLE_matrix<-as.matrix(TAXA_TABLE_split)
-TAXA_TABLE<-tax_table(TAXA_TABLE_matrix) # tax_table=matrix
-
-# OTU table
-rownames(OTU_table_T)<-OTU_table_T[,1]
-OTU_table_T<-data.frame(OTU_table_T[,-1])
-
-OTU_TABLE<-otu_table(OTU_table_T, taxa_are_rows = TRUE)
-sample_names(OTU_TABLE)
-
-# Sample data
-SAMPLEDATA<-OTU_table_new[,1:14]
-rownames(SAMPLEDATA)<-OTU_table_new$Sample_ID
-SAMPLEDATA<-data.frame(SAMPLEDATA[,-1])
-levels(SAMPLEDATA$Host)
-
-SAMPLEDATA<-sample_data(SAMPLEDATA) #Sample_data = data.frame
-sample_names(SAMPLEDATA)
-SAMPLEDATA$SamplingTimepoint<-factor(SAMPLEDATA$SamplingTimepoint, levels=c("before disturbance", "24h after disturbance", "168h after disturbance"))
-SAMPLEDATA$MicrobiomeDiversity<-factor(SAMPLEDATA$MicrobiomeDiversity, levels=c("VLMD","LMD","HMD","VHMD"))
-
-#combine Sampledata, Taxadata, OTU table to phyloseq table
-PHYLOSEQ_TABLE<-phyloseq(OTU_TABLE, SAMPLEDATA, TAXA_TABLE)
-PHYLOSEQ_TABLE
-
-save(PHYLOSEQ_TABLE, file="PHYLOSEQ_TABLE.RData")
-
+##########################
 ##### ALPHA DIVERSITY ####
+##########################
 RICHNESS<-estimate_richness(PHYLOSEQ_TABLE, split=TRUE, measures=c("Shannon","Observed"))
 RICHNESS<-as.data.frame(RICHNESS)
 RICHNESS<-tibble::rownames_to_column(as.data.frame(RICHNESS), var="Sample_ID")
 Richness_table<-right_join(METADATA, RICHNESS, by="Sample_ID")
-save(Richness_table, file="Richness_table.RData")
 
 MEAN_Richness<-Richness_table %>% dplyr::group_by(Code_short) %>% dplyr:: summarise(mean(Observed),sd(Observed))
 write.csv(MEAN_Richness, file="Richness.csv")
@@ -98,7 +46,6 @@ write.csv(MEAN_Evenness, file="Evenness.csv")
 library(nlme)
 library(car)
 
-head(Richness_table)
 Richness_table$SamplingTimepoint<-factor(Richness_table$SamplingTimepoint, levels=c("before disturbance", "24h after disturbance", "168h after disturbance"))
 
 # function for Standard Error
@@ -160,21 +107,17 @@ pdf('Shannon_Graph.pdf', width=6, height=6)
 print(ShannonPlot)
 graphics.off()
 
-tiff(filename="Shannon_Graph.tiff", width=6, height=6, units="in",
-     pointsize=16, compression="lzw", bg="white", res=600)
-print(ShannonPlot)
-dev.off()
-
 setEPS()
 postscript("Shannon_Graph.eps", width=6, height=6)
 ShannonPlot
 dev.off()
 
-### ANOVAs
+### ANOVA AlphaDiv ####
 # ANOVA with interactions of SamplingTimepoint*Treatment*Host
 model1<-aov(Shannon~SamplingTimepoint*Treatment*Host, data=Richness_table)
-summary(model1) # it shows that Host is significantly affect Alpha Diversity
+summary(model1) # Host sig ***
 capture.output(summary(model1),file="ANOVA_Shannon.doc")
+
 model1<-aov(Shannon~Host, data=Richness_table)
 summary(model1)
 TukeyHSD(model1)
@@ -184,6 +127,7 @@ capture.output(TukeyHSD(model1),file="TukeyANOVA_Shannon.doc")
 library(lme4)
 model2<-lmer(Shannon~SamplingTimepoint*Treatment*Host+(1|Genotype), data=Richness_table)
 summary(model2) # Genotype random effects explains for 0.04280 of the Variance in the dataset - this is very low and therefore Genotype can be ignored
+
 library(nlme)
 model3<-lme(Shannon~SamplingTimepoint*Treatment*Host, random =~1|Genotype, data=Richness_table) #same as model2 but with different package
 summary(model3)
@@ -271,7 +215,7 @@ PHYLOSEQ_TABLE = transform_sample_counts(PHYLOSEQ_TABLE, function(x)100*x/sum(x)
 otu_table(PHYLOSEQ_TABLE)
 PHYLOSEQ_TABLE
 
-## all Hosts ##
+#### NMDS ####
 set.seed(1000)
 ORD<-ordinate(PHYLOSEQ_TABLE,"NMDS","bray", k=2, trymax=1000)
 library(vegan)
@@ -331,11 +275,6 @@ pdf('NMDS_HostTreatment.pdf', width=8, height=6)
 print(plot)
 graphics.off()
 
-tiff(filename='NMDS_HostTreatment.tiff', width=8, height=6, units="in",
-     pointsize=16, compression="lzw", bg="white", res=600)
-print(plot)
-dev.off()
-
 setEPS()
 postscript('NMDS_HostTreatment.eps', width=8, height=6)
 plot
@@ -350,7 +289,7 @@ dev.off()
 Host_group<-get_variable(PHYLOSEQ_TABLE, "Host")
 HOSTANOSIM<-anosim(distance(PHYLOSEQ_TABLE,"bray"), Host_group)
 HOSTANOSIM$signif #p=0.001
-HOSTANOSIM$statistic #R=0.979312 --> Each sponge host is associated with a "unique" Microbiome
+HOSTANOSIM$statistic #R=0.979312 --> Each sponge host is associated with a "unique" microbiome
 
 Treatment_group<-get_variable(PHYLOSEQ_TABLE, "Treatment")
 HOSTANOSIM<-anosim(distance(PHYLOSEQ_TABLE,"bray"), Treatment_group, strata=Host_group)
@@ -359,30 +298,31 @@ HOSTANOSIM$statistic # R=-0.0070019 --> even distribution between treatments wit
 
 Genotype_group<-get_variable(PHYLOSEQ_TABLE, "Genotype")
 HOSTANOSIM<-anosim(distance(PHYLOSEQ_TABLE,"bray"), Genotype_group, strata=Host_group)
-HOSTANOSIM$signif # p=0.0.27
-HOSTANOSIM$statistic # R=-0.0070019 
+HOSTANOSIM$signif # p=0.001
+HOSTANOSIM$statistic # R=0.9427445 
 
 MicrobiomeDiversity_group<-get_variable(PHYLOSEQ_TABLE, "MicrobiomeDiversity")
 HOSTANOSIM<-anosim(distance(PHYLOSEQ_TABLE,"bray"), MicrobiomeDiversity_group)
 HOSTANOSIM$signif # p=0.001
-HOSTANOSIM$statistic # p=0.2467239
+HOSTANOSIM$statistic # p=0.4109492
 
 Tank_group<-get_variable(PHYLOSEQ_TABLE, "TankNr")
 HOSTANOSIM<-anosim(distance(PHYLOSEQ_TABLE,"bray"), Tank_group)
-HOSTANOSIM$signif # no tank effect!
+HOSTANOSIM$signif # no tank effect p=0.789
 
 TreatmentComb_group<-get_variable(PHYLOSEQ_TABLE, "TreatmentComb")
 HOSTANOSIM<-anosim(distance(PHYLOSEQ_TABLE,"bray"), TreatmentComb_group)
 HOSTANOSIM$signif # not sign!
 
-Time_group<-get_variable(PHYLOSEQ_TABLE, "SamplingTimepoint")
-HOSTANOSIM<-anosim(distance(PHYLOSEQ_TABLE,"bray"), Time_group, strata=HT_group)
-HOSTANOSIM$signif # not sign!
-
 HT_group<-get_variable(PHYLOSEQ_TABLE, "Host_Treatment")
 HOSTANOSIM<-anosim(distance(PHYLOSEQ_TABLE,"bray"), HT_group)
 HOSTANOSIM$signif # sign!
-HOSTANOSIM$statistic # p=0.8380413 -> this result might be biased because Host has a significant effect 
+HOSTANOSIM$statistic # p=0.901555 -> this result might be biased because Host has a significant effect 
+
+Time_group<-get_variable(PHYLOSEQ_TABLE, "SamplingTimepoint")
+HOSTANOSIM<-anosim(distance(PHYLOSEQ_TABLE,"bray"), Time_group, strata=HT_group)
+HOSTANOSIM$signif #p=0.003
+HOSTANOSIM$statistic #R=-0.01117194
 
 #### ADONIS & BETA DISPERSION ####
 # Adonis = permutational Multivariate Analysis of variance using distance matrices
@@ -400,14 +340,13 @@ capture.output(ADONIS2,file="Adonis2_TimeeffectHOSTTREATMENT.doc")
 perm<-how(nperm=10000)
 setBlocks(perm)<-with(df, Genotype)
 ADONIS2<-adonis2(d~SamplingTimepoint, data=df, permutations = perm, method = "bray")
-ADONIS2 #0.0102 *
+ADONIS2 #0.0104 *
 
 perm<-how(nperm=10000)
 setBlocks(perm)<-with(df, Host_Treatment)
 ADONIS2<-adonis2(d~Genotype, data=df, permutations = perm, method = "bray")
 ADONIS2 # 9.999e-05 ***
 
-library(vegan)
 perm<-how(nperm=10000)
 setBlocks(perm)<-with(df, Host)
 ADONIS2<-adonis2(d~Genotype, data=df, permutations = perm, method = "bray")
@@ -519,7 +458,7 @@ HOSTANOSIM<-anosim(distance(PRUNED,"bray"), Genotype)
 HOSTANOSIM$signif # p=0.001
 HOSTANOSIM$statistic #R=0.9744856
 
-#  multivariate homogeneity of group dispersion (variances).
+#DISPERSION -  multivariate homogeneity of group dispersion (variances).
 Host_Treatment_group<-get_variable(PHYLOSEQ_TABLE, "Host_Treatment")
 BETADISP<-betadisper(d, Host_Treatment_group,type=c("centroid"))
 anova(BETADISP) #significant <2.2e-16
@@ -564,7 +503,8 @@ BETADISP_HSD<-TukeyHSD(BETADISP)
 BETADISP_HSD
 plot(BETADISP_HSD)
 
-#  multivariate homogeneity of group dispersion (variances).
+#  multivariate homogeneity of group dispersion (variances)
+d=phyloseq::distance(PHYLOSEQ_TABLE,'bray')
 TreatmentComb_group<-get_variable(PHYLOSEQ_TABLE, "Genotype")
 BETADISP<-betadisper(d, TreatmentComb_group,type=c("centroid"))
 anova(BETADISP)
@@ -575,8 +515,7 @@ BETADISP_HSD<-TukeyHSD(BETADISP)
 BETADISP_HSD
 plot(BETADISP_HSD)
 
-# graph Betadisper
-library(ggplot2)
+### graph Betadisper
 Host_Treatment_group<-get_variable(PHYLOSEQ_TABLE, "Host_Treatment")
 BETADISP<-betadisper(d, Host_Treatment_group,type=c("centroid"))
 
@@ -586,8 +525,6 @@ Disp<-cbind(Sample_ID, Disp)
 Disp_new<-right_join(METADATA, Disp, by="Sample_ID")
 Disp_new<-Disp_new%>% group_by(Host) %>% arrange(desc(BETADISP$distances), .by_group=TRUE)
 Disp_new$TreatmentComb<-factor(Disp_new$TreatmentComb, levels=c("Control", "before Pulse", "after Pulse"))
-
-save(Disp_new, file="Disp_new.RData")
 
 plot<-ggplot(Disp_new, aes(y=(BETADISP$distances),x=Host_Treatment))+
   geom_boxplot(aes(y=BETADISP$distances, x=Host_Treatment))+
@@ -622,11 +559,6 @@ plot
 pdf('Betadisper_HostTreatment.pdf', width=10, height=6)
 print(plot)
 graphics.off()
-
-tiff(filename='Betadisper_HostTreatment.tiff', width=14, height=10, units="in",
-     pointsize=16, compression="lzw", bg="white", res=600)
-print(plot)
-dev.off()
 
 setEPS()
 postscript('Betadisper_HostTreatment.eps', width=14, height=10)
@@ -675,17 +607,12 @@ pdf('Phyla_Barchart.pdf', width=8, height=6)
 print(plot)
 graphics.off()
 
-tiff(filename='Phyla_Barchart.tiff', width=12, height=10, units="in",
-     pointsize=16, compression="lzw", bg="white", res=600)
-print(plot)
-dev.off()
-
 setEPS()
 postscript('Phyla_Barchart.eps')
 plot
 dev.off()
 
-### Phyla of dataset ####
+### Class of dataset ####
 top20otus=names(sort(taxa_sums(PHYLOSEQ_TABLE), TRUE)[1:100])
 top20otus
 taxtab20=cbind(tax_table(PHYLOSEQ_TABLE), OTU1000=NA)
@@ -727,105 +654,9 @@ pdf('Class_Barchart.pdf', width=8, height=6)
 print(plot)
 graphics.off()
 
-tiff(filename='Phyla_Barchart.tiff', width=12, height=10, units="in",
-     pointsize=16, compression="lzw", bg="white", res=600)
-print(plot)
-dev.off()
+#### data for alluvial graph in RAWGraphs ####
+# https://rawgraphs.io
 
-#### Indicator Value Analysis ####
-library(labdsv)
-library(MASS)
-library(vegan)
-library(cluster)
-library(indicspecies)
-library(permute)
-library(phyloseq)
-library(data.table)
-
-OTU_table_rel<-as.data.frame(otu_table(PHYLOSEQ_TABLE))
-OTU_table_rel<-as.data.frame(t(OTU_table_rel))
-OTU_table_rel<-setDT(OTU_table_rel, keep.rownames = TRUE)
-OTU_table_rel<-dplyr::rename(OTU_table_rel, Sample_ID=rn)
-
-OTU_table_rel<-right_join(METADATA, OTU_table_rel, by="Sample_ID")
-head(OTU_table_rel)
-
-#indval
-(INDVAL_OTUs_species_GC=(as.data.frame(OTU_table_rel[,15:6054])))
-(INDVAL_Groups_Origin_GC=(as.character(OTU_table_rel$Host)))
-INDVAL_Origin_GC=multipatt(INDVAL_OTUs_species_GC, INDVAL_Groups_Origin_GC, func="IndVal.g", duleg=FALSE, control=how(nperm=100))
-summary(INDVAL_Origin_GC, indvalcomp=TRUE)
-options(max.print=1000000000)
-(summary.multipatt(INDVAL_Origin_GC, alpha = 0.05, indvalcomp=TRUE, At=.85, Bt=.85)) 
-# Component ‘A’ is the probability that the surveyed
-# site belongs to the target site group given the fact that the species has been found. 
-# This conditional probability is called the specificity or positive predictive value of the species as indicator of the site group. 
-# Component ‘B’ is the probability of finding the species in sites belonging to the site group. 
-# This second conditional probability is called the fidelity or sensitivity of the species as indicator of the target site group
-options(max.print=1000000000)
-capture.output(summary.multipatt(INDVAL_Origin_GC, alpha = 0.05,At=0.85, Bt=0.85, indvalcomp=TRUE),file="IndVal_Hostspecific085.csv")
-
-## graphs IndVal ####
-#load datasets & merge them so that only indicator otus are left
-IndValHOST<-read.csv('IndVallist.csv', header = TRUE, sep = ",", strip.white = TRUE)
-head(IndValHOST)
-IndValHOST$OTUs<-as.character(IndValHOST$OTUs)
-INDVAL_PHYLO<-phyloseq::prune_taxa(IndValHOST$OTUs, PHYLOSEQ_TABLE)
-INDVAL_PHYLO
-tax_table(INDVAL_PHYLO)
-
-#### Genus of the 15 most abundant indicators in the dataset ####
-top20otus=names(sort(taxa_sums(IndVal_PHYLO), TRUE)[1:15])
-top20otus
-taxtab20=cbind(tax_table(IndVal_PHYLO), OTU15=NA)
-taxtab20[top20otus, "OTU15"] <- as(tax_table(IndVal_PHYLO)[top20otus, "Order"], "character")
-tax_table(IndVal_PHYLO)<-tax_table(taxtab20)
-
-merged<-merge_samples(IndVal_PHYLO, "Host_Treatment")
-sample_data(merged)$Host_Treatment<-levels(sample_data(IndVal_PHYLO)$Host_Treatment)
-merged=transform_sample_counts(merged,function(x)100*x/sum(x))
-
-merged20 = prune_taxa(top20otus, merged)
-
-pal <- function(col, border = "light gray", ...)
-{
-  n <- length(col)
-  plot(0, 0, type="n", xlim = c(0, 1), ylim = c(0, 1),
-       axes = FALSE, xlab = "", ylab = "", ...)
-  rect(0:(n-1)/n, 0, 1:n/n, 1, col = col, border = border)
-}
-# create palett 
-tol21rainbow1= c("#771122", "#AA4455", "#DD7788","#771155", "#AA4488", "#CC99BB", "#114477", "#4477AA", "#77AADD", "#117777", "#44AAAA", "#77CCCC", "#117744", "#44AA77", "#88CCAA","#AAAA44", "#DDDD77")
-tol21rainbow<- c("#9E0142", "#D53E4F", "#F46D43", "#FDAE61", "#FEE08B", "#FFFFBF", "#E6F598" ,"#ABDDA4" ,"#66C2A5","#498699", "#466CA6", "#3F477D","#7A6E99", "#865599","#BF5178", "#993A65","#991A51")
-
-pal(tol21rainbow)
-library(ggplot2)
-plot<-plot_bar(merged, x="Host_Treatment", fill="Phylum")+
-  geom_bar(aes(fill=Phylum, color=Phylum), stat="identity", position="stack")
-scale_fill_manual(values = tol21rainbow)+
-  scale_color_manual(values = tol21rainbow)+
-  theme_classic()+
-  theme(legend.position="right", legend.direction="vertical", legend.title = element_blank(), axis.text.x = element_text(angle=90,vjust = 0.5, hjust=1))+
-  scale_x_discrete(expand = c(0,0)) + scale_y_continuous(expand = c(0,0))
-plot
-
-
-merged<-merge_samples(IndVal_PHYLO, "Host_Treatment")
-sample_data(merged)$Host_Treatment<-levels(sample_data(IndVal_PHYLO)$Host_Treatment)
-merged=transform_sample_counts(merged,function(x)100*x/sum(x))
-plot<-plot_bar(merged20, x="Host_Treatment", fill="Order")+
-  geom_bar(aes(fill=Order, color=Order), stat="identity", position="stack")
-scale_fill_manual(values = tol21rainbow)+
-  scale_color_manual(values = tol21rainbow)+
-  theme_classic()+
-  theme(legend.position="right", legend.direction="vertical", legend.title = element_blank(), axis.text.x = element_text(angle=90,vjust = 0.5, hjust=1))+
-  scale_x_discrete(expand = c(0,0)) + scale_y_continuous(expand = c(0,0))
-plot
-
-plot_heatmap(INDVAL_PHYLO, "NMDS", "bray", "Code_short", "Genus")
-
-
-#### data for alluvial graphs in RAWGraphs ####
 #### AQ ####
 AQ=subset_samples(PHYLOSEQ_TABLE, Host=="AQ")
 AQ
@@ -1412,3 +1243,96 @@ setEPS()
 postscript('ST_Nitrospira_Oligotyping_Genotype.eps', width=7, height=6)
 combplot
 dev.off()
+
+#### Indicator Value Analysis ####
+#not included in paper
+library(labdsv)
+library(MASS)
+library(vegan)
+library(cluster)
+library(indicspecies)
+library(permute)
+library(phyloseq)
+library(data.table)
+
+OTU_table_rel<-as.data.frame(otu_table(PHYLOSEQ_TABLE))
+OTU_table_rel<-as.data.frame(t(OTU_table_rel))
+OTU_table_rel<-setDT(OTU_table_rel, keep.rownames = TRUE)
+OTU_table_rel<-dplyr::rename(OTU_table_rel, Sample_ID=rn)
+
+OTU_table_rel<-right_join(METADATA, OTU_table_rel, by="Sample_ID")
+head(OTU_table_rel)
+
+#indval
+(INDVAL_OTUs_species_GC=(as.data.frame(OTU_table_rel[,15:6054])))
+(INDVAL_Groups_Origin_GC=(as.character(OTU_table_rel$Host)))
+INDVAL_Origin_GC=multipatt(INDVAL_OTUs_species_GC, INDVAL_Groups_Origin_GC, func="IndVal.g", duleg=FALSE, control=how(nperm=100))
+summary(INDVAL_Origin_GC, indvalcomp=TRUE)
+options(max.print=1000000000)
+(summary.multipatt(INDVAL_Origin_GC, alpha = 0.05, indvalcomp=TRUE, At=.85, Bt=.85)) 
+# Component ‘A’ is the probability that the surveyed
+# site belongs to the target site group given the fact that the species has been found. 
+# This conditional probability is called the specificity or positive predictive value of the species as indicator of the site group. 
+# Component ‘B’ is the probability of finding the species in sites belonging to the site group. 
+# This second conditional probability is called the fidelity or sensitivity of the species as indicator of the target site group
+options(max.print=1000000000)
+capture.output(summary.multipatt(INDVAL_Origin_GC, alpha = 0.05,At=0.85, Bt=0.85, indvalcomp=TRUE),file="IndVal_Hostspecific085.csv")
+
+## graphs IndVal ####
+#load datasets & merge them so that only indicator otus are left
+IndValHOST<-read.csv('IndVallist.csv', header = TRUE, sep = ",", strip.white = TRUE)
+head(IndValHOST)
+IndValHOST$OTUs<-as.character(IndValHOST$OTUs)
+INDVAL_PHYLO<-phyloseq::prune_taxa(IndValHOST$OTUs, PHYLOSEQ_TABLE)
+INDVAL_PHYLO
+tax_table(INDVAL_PHYLO)
+
+#### Genus of the 15 most abundant indicators in the dataset ####
+top20otus=names(sort(taxa_sums(IndVal_PHYLO), TRUE)[1:15])
+top20otus
+taxtab20=cbind(tax_table(IndVal_PHYLO), OTU15=NA)
+taxtab20[top20otus, "OTU15"] <- as(tax_table(IndVal_PHYLO)[top20otus, "Order"], "character")
+tax_table(IndVal_PHYLO)<-tax_table(taxtab20)
+
+merged<-merge_samples(IndVal_PHYLO, "Host_Treatment")
+sample_data(merged)$Host_Treatment<-levels(sample_data(IndVal_PHYLO)$Host_Treatment)
+merged=transform_sample_counts(merged,function(x)100*x/sum(x))
+
+merged20 = prune_taxa(top20otus, merged)
+
+pal <- function(col, border = "light gray", ...)
+{
+  n <- length(col)
+  plot(0, 0, type="n", xlim = c(0, 1), ylim = c(0, 1),
+       axes = FALSE, xlab = "", ylab = "", ...)
+  rect(0:(n-1)/n, 0, 1:n/n, 1, col = col, border = border)
+}
+# create palett 
+tol21rainbow1= c("#771122", "#AA4455", "#DD7788","#771155", "#AA4488", "#CC99BB", "#114477", "#4477AA", "#77AADD", "#117777", "#44AAAA", "#77CCCC", "#117744", "#44AA77", "#88CCAA","#AAAA44", "#DDDD77")
+tol21rainbow<- c("#9E0142", "#D53E4F", "#F46D43", "#FDAE61", "#FEE08B", "#FFFFBF", "#E6F598" ,"#ABDDA4" ,"#66C2A5","#498699", "#466CA6", "#3F477D","#7A6E99", "#865599","#BF5178", "#993A65","#991A51")
+
+pal(tol21rainbow)
+library(ggplot2)
+plot<-plot_bar(merged, x="Host_Treatment", fill="Phylum")+
+  geom_bar(aes(fill=Phylum, color=Phylum), stat="identity", position="stack")
+scale_fill_manual(values = tol21rainbow)+
+  scale_color_manual(values = tol21rainbow)+
+  theme_classic()+
+  theme(legend.position="right", legend.direction="vertical", legend.title = element_blank(), axis.text.x = element_text(angle=90,vjust = 0.5, hjust=1))+
+  scale_x_discrete(expand = c(0,0)) + scale_y_continuous(expand = c(0,0))
+plot
+
+
+merged<-merge_samples(IndVal_PHYLO, "Host_Treatment")
+sample_data(merged)$Host_Treatment<-levels(sample_data(IndVal_PHYLO)$Host_Treatment)
+merged=transform_sample_counts(merged,function(x)100*x/sum(x))
+plot<-plot_bar(merged20, x="Host_Treatment", fill="Order")+
+  geom_bar(aes(fill=Order, color=Order), stat="identity", position="stack")
+scale_fill_manual(values = tol21rainbow)+
+  scale_color_manual(values = tol21rainbow)+
+  theme_classic()+
+  theme(legend.position="right", legend.direction="vertical", legend.title = element_blank(), axis.text.x = element_text(angle=90,vjust = 0.5, hjust=1))+
+  scale_x_discrete(expand = c(0,0)) + scale_y_continuous(expand = c(0,0))
+plot
+
+plot_heatmap(INDVAL_PHYLO, "NMDS", "bray", "Code_short", "Genus")

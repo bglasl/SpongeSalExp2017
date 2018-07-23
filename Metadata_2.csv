@@ -1,0 +1,109 @@
+Sample_ID,Code,Host,Clone,Treatment,Genotype,SamplingDate,TankNr,SamplingTimepoint,MicrobiomeDiversity,Code_short,Host_Treatment,TreatmentComb,Group
+AQ.03,AQ_T_3.5,AQ,5,Pulse,AQ_D,19/4/17,D,168h after disturbance,LMD,AQ_T_3,AQ_Treatment,after Pulse,168h after Pulse
+AQ.01,AQ_T_5.5,AQ,5,Pulse,AQ_E,19/4/17,E,168h after disturbance,LMD,AQ_T_3,AQ_Treatment,after Pulse,168h after Pulse
+AQ.06,AQ_T_6.5,AQ,5,Pulse,AQ_F,19/4/17,F,168h after disturbance,LMD,AQ_T_3,AQ_Treatment,after Pulse,168h after Pulse
+CO.03,CO_T_3.5,CO,5,Pulse,CO_D,19/4/17,D,168h after disturbance,VHMD,CO_T_3,CO_Treatment,after Pulse,168h after Pulse
+CO.01,CO_T_5.5,CO,5,Pulse,CO_E,19/4/17,E,168h after disturbance,VHMD,CO_T_3,CO_Treatment,after Pulse,168h after Pulse
+CO.06,CO_T_6.5,CO,5,Pulse,CO_F,19/4/17,F,168h after disturbance,VHMD,CO_T_3,CO_Treatment,after Pulse,168h after Pulse
+CY.03,CY_T_3.5,CY,5,Pulse,CY_D,19/4/17,D,168h after disturbance,LMD,CY_T_3,CY_Treatment,after Pulse,168h after Pulse
+CY.01,CY_T_5.5,CY,5,Pulse,CY_E,19/4/17,E,168h after disturbance,LMD,CY_T_3,CY_Treatment,after Pulse,168h after Pulse
+CY.06,CY_T_6.5,CY,5,Pulse,CY_F,19/4/17,F,168h after disturbance,LMD,CY_T_3,CY_Treatment,after Pulse,168h after Pulse
+IB.03,IB_T_3.5,IB,5,Pulse,IB_D,19/4/17,D,168h after disturbance,VLMD,IB_T_3,IB_Treatment,after Pulse,168h after Pulse
+IB.01,IB_T_5.5,IB,5,Pulse,IB_E,19/4/17,E,168h after disturbance,VLMD,IB_T_3,IB_Treatment,after Pulse,168h after Pulse
+IB.06,IB_T_6.5,IB,5,Pulse,IB_F,19/4/17,F,168h after disturbance,VLMD,IB_T_3,IB_Treatment,after Pulse,168h after Pulse
+IR.03,IR_T_3.5,IR,5,Pulse,IR_D,19/4/17,D,168h after disturbance,HMD,IR_T_3,IR_Treatment,after Pulse,168h after Pulse
+IR.01,IR_T_5.5,IR,5,Pulse,IR_E,19/4/17,E,168h after disturbance,HMD,IR_T_3,IR_Treatment,after Pulse,168h after Pulse
+IR.06,IR_T_6.5,IR,5,Pulse,IR_F,19/4/17,F,168h after disturbance,HMD,IR_T_3,IR_Treatment,after Pulse,168h after Pulse
+ST.03,ST_T_3.5,ST,5,Pulse,ST_D,19/4/17,D,168h after disturbance,LMD,ST_T_3,ST_Treatment,after Pulse,168h after Pulse
+ST.01,ST_T_5.5,ST,5,Pulse,ST_E,19/4/17,E,168h after disturbance,LMD,ST_T_3,ST_Treatment,after Pulse,168h after Pulse
+ST.06,ST_T_6.5,ST,5,Pulse,ST_F,19/4/17,F,168h after disturbance,LMD,ST_T_3,ST_Treatment,after Pulse,168h after Pulse
+AQ.04,AQ_C_1.5,AQ,5,Control,AQ_A,19/4/17,A,168h after disturbance,LMD,AQ_C_3,AQ_Control,Control,Control
+AQ.05,AQ_C_5.5,AQ,5,Control,AQ_B,19/4/17,B,168h after disturbance,LMD,AQ_C_3,AQ_Control,Control,Control
+AQ.02,AQ_C_6.5,AQ,5,Control,AQ_C,19/4/17,C,168h after disturbance,LMD,AQ_C_3,AQ_Control,Control,Control
+CO.04,CO_C_1.5,CO,5,Control,CO_A,19/4/17,A,168h after disturbance,VHMD,CO_C_3,CO_Control,Control,Control
+CO.05,CO_C_5.5,CO,5,Control,CO_B,19/4/17,B,168h after disturbance,VHMD,CO_C_3,CO_Control,Control,Control
+CO.02,CO_C_6.5,CO,5,Control,CO_C,19/4/17,C,168h after disturbance,VHMD,CO_C_3,CO_Control,Control,Control
+CY.04,CY_C_1.5,CY,5,Control,CY_A,19/4/17,A,168h after disturbance,LMD,CY_C_3,CY_Control,Control,Control
+CY.05,CY_C_5.5,CY,5,Control,CY_B,19/4/17,B,168h after disturbance,LMD,CY_C_3,CY_Control,Control,Control
+CY.02,CY_C_6.5,CY,5,Control,CY_C,19/4/17,C,168h after disturbance,LMD,CY_C_3,CY_Control,Control,Control
+IB.04,IB_C_1.5,IB,5,Control,IB_A,19/4/17,A,168h after disturbance,VLMD,IB_C_3,IB_Control,Control,Control
+IB.05,IB_C_5.5,IB,5,Control,IB_B,19/4/17,B,168h after disturbance,VLMD,IB_C_3,IB_Control,Control,Control
+IB.02,IB_C_6.5,IB,5,Control,IB_C,19/4/17,C,168h after disturbance,VLMD,IB_C_3,IB_Control,Control,Control
+IR.04,IR_C_1.5,IR,5,Control,IR_A,19/4/17,A,168h after disturbance,HMD,IR_C_3,IR_Control,Control,Control
+IR.05,IR_C_5.5,IR,5,Control,IR_B,19/4/17,B,168h after disturbance,HMD,IR_C_3,IR_Control,Control,Control
+IR.02,IR_C_6.5,IR,5,Control,IR_C,19/4/17,C,168h after disturbance,HMD,IR_C_3,IR_Control,Control,Control
+ST.04,ST_C_1.5,ST,5,Control,ST_A,19/4/17,A,168h after disturbance,LMD,ST_C_3,ST_Control,Control,Control
+ST.05,ST_C_5.5,ST,5,Control,ST_B,19/4/17,B,168h after disturbance,LMD,ST_C_3,ST_Control,Control,Control
+ST.02,ST_C_6.5,ST,5,Control,ST_C,19/4/17,C,168h after disturbance,LMD,ST_C_3,ST_Control,Control,Control
+AQ.11,AQ_T_3.4,AQ,4,Pulse,AQ_D,13/4/17,D,24h after disturbance,LMD,AQ_T_2,AQ_Treatment,after Pulse,24h after Pulse
+AQ.07,AQ_T_5.4,AQ,4,Pulse,AQ_E,13/4/17,E,24h after disturbance,LMD,AQ_T_2,AQ_Treatment,after Pulse,24h after Pulse
+AQ.09,AQ_T_6.4,AQ,4,Pulse,AQ_F,13/4/17,F,24h after disturbance,LMD,AQ_T_2,AQ_Treatment,after Pulse,24h after Pulse
+CO.11,CO_T_3.4,CO,4,Pulse,CO_D,13/4/17,D,24h after disturbance,VHMD,CO_T_2,CO_Treatment,after Pulse,24h after Pulse
+CO.07,CO_T_5.4,CO,4,Pulse,CO_E,13/4/17,E,24h after disturbance,VHMD,CO_T_2,CO_Treatment,after Pulse,24h after Pulse
+CO.09,CO_T_6.4,CO,4,Pulse,CO_F,13/4/17,F,24h after disturbance,VHMD,CO_T_2,CO_Treatment,after Pulse,24h after Pulse
+CY.11,CY_T_3.4,CY,4,Pulse,CY_D,13/4/17,D,24h after disturbance,LMD,CY_T_2,CY_Treatment,after Pulse,24h after Pulse
+CY.07,CY_T_5.4,CY,4,Pulse,CY_E,13/4/17,E,24h after disturbance,LMD,CY_T_2,CY_Treatment,after Pulse,24h after Pulse
+CY.09,CY_T_6.4,CY,4,Pulse,CY_F,13/4/17,F,24h after disturbance,LMD,CY_T_2,CY_Treatment,after Pulse,24h after Pulse
+IB.11,IB_T_3.4,IB,4,Pulse,IB_D,13/4/17,D,24h after disturbance,VLMD,IB_T_2,IB_Treatment,after Pulse,24h after Pulse
+IB.07,IB_T_5.4,IB,4,Pulse,IB_E,13/4/17,E,24h after disturbance,VLMD,IB_T_2,IB_Treatment,after Pulse,24h after Pulse
+IB.09,IB_T_6.4,IB,4,Pulse,IB_F,13/4/17,F,24h after disturbance,VLMD,IB_T_2,IB_Treatment,after Pulse,24h after Pulse
+IR.11,IR_T_3.4,IR,4,Pulse,IR_D,13/4/17,D,24h after disturbance,HMD,IR_T_2,IR_Treatment,after Pulse,24h after Pulse
+IR.07,IR_T_5.4,IR,4,Pulse,IR_E,13/4/17,E,24h after disturbance,HMD,IR_T_2,IR_Treatment,after Pulse,24h after Pulse
+IR.09,IR_T_6.4,IR,4,Pulse,IR_F,13/4/17,F,24h after disturbance,HMD,IR_T_2,IR_Treatment,after Pulse,24h after Pulse
+ST.11,ST_T_3.4,ST,4,Pulse,ST_D,13/4/17,D,24h after disturbance,LMD,ST_T_2,ST_Treatment,after Pulse,24h after Pulse
+ST.07,ST_T_5.4,ST,4,Pulse,ST_E,13/4/17,E,24h after disturbance,LMD,ST_T_2,ST_Treatment,after Pulse,24h after Pulse
+ST.09,ST_T_6.4,ST,4,Pulse,ST_F,13/4/17,F,24h after disturbance,LMD,ST_T_2,ST_Treatment,after Pulse,24h after Pulse
+AQ.10,AQ_C_1.4,AQ,4,Control,AQ_A,13/4/17,A,24h after disturbance,LMD,AQ_C_2,AQ_Control,Control,Control
+AQ.16,AQ_C_5.4,AQ,4,Control,AQ_B,13/4/17,B,24h after disturbance,LMD,AQ_C_2,AQ_Control,Control,Control
+AQ.08,AQ_C_6.4,AQ,4,Control,AQ_C,13/4/17,C,24h after disturbance,LMD,AQ_C_2,AQ_Control,Control,Control
+CO.10,CO_C_1.4,CO,4,Control,CO_A,13/4/17,A,24h after disturbance,VHMD,CO_C_2,CO_Control,Control,Control
+CO.16,CO_C_5.4,CO,4,Control,CO_B,13/4/17,B,24h after disturbance,VHMD,CO_C_2,CO_Control,Control,Control
+CO.08,CO_C_6.4,CO,4,Control,CO_C,13/4/17,C,24h after disturbance,VHMD,CO_C_2,CO_Control,Control,Control
+CY.10,CY_C_1.4,CY,4,Control,CY_A,13/4/17,A,24h after disturbance,LMD,CY_C_2,CY_Control,Control,Control
+CY.16,CY_C_5.4,CY,4,Control,CY_B,13/4/17,B,24h after disturbance,LMD,CY_C_2,CY_Control,Control,Control
+CY.08,CY_C_6.4,CY,4,Control,CY_C,13/4/17,C,24h after disturbance,LMD,CY_C_2,CY_Control,Control,Control
+IB.10,IB_C_1.4,IB,4,Control,IB_A,13/4/17,A,24h after disturbance,VLMD,IB_C_2,IB_Control,Control,Control
+IB.16,IB_C_5.4,IB,4,Control,IB_B,13/4/17,B,24h after disturbance,VLMD,IB_C_2,IB_Control,Control,Control
+IB.08,IB_C_6.4,IB,4,Control,IB_C,13/4/17,C,24h after disturbance,VLMD,IB_C_2,IB_Control,Control,Control
+IR.10,IR_C_1.4,IR,4,Control,IR_A,13/4/17,A,24h after disturbance,HMD,IR_C_2,IR_Control,Control,Control
+IR.16,IR_C_5.4,IR,4,Control,IR_B,13/4/17,B,24h after disturbance,HMD,IR_C_2,IR_Control,Control,Control
+IR.08,IR_C_6.4,IR,4,Control,IR_C,13/4/17,C,24h after disturbance,HMD,IR_C_2,IR_Control,Control,Control
+ST.10,ST_C_1.4,ST,4,Control,ST_A,13/4/17,A,24h after disturbance,LMD,ST_C_2,ST_Control,Control,Control
+ST.16,ST_C_5.4,ST,4,Control,ST_B,13/4/17,B,24h after disturbance,LMD,ST_C_2,ST_Control,Control,Control
+ST.08,ST_C_6.4,ST,4,Control,ST_C,13/4/17,C,24h after disturbance,LMD,ST_C_2,ST_Control,Control,Control
+AQ.12,AQ_T_3.1,AQ,1,Pulse,AQ_D,3/4/17,D,before disturbance,LMD,AQ_T_1,AQ_Treatment,before Pulse,before Pulse
+AQ.17,AQ_T_5.1,AQ,1,Pulse,AQ_E,3/4/17,E,before disturbance,LMD,AQ_T_1,AQ_Treatment,before Pulse,before Pulse
+AQ.18,AQ_T_6.1,AQ,1,Pulse,AQ_F,3/4/17,F,before disturbance,LMD,AQ_T_1,AQ_Treatment,before Pulse,before Pulse
+CO.12,CO_T_3.1,CO,1,Pulse,CO_D,3/4/17,D,before disturbance,VHMD,CO_T_1,CO_Treatment,before Pulse,before Pulse
+CO.17,CO_T_5.1,CO,1,Pulse,CO_E,3/4/17,E,before disturbance,VHMD,CO_T_1,CO_Treatment,before Pulse,before Pulse
+CO.18,CO_C_6.1,CO,1,Pulse,CO_F,3/4/17,F,before disturbance,VHMD,CO_T_1,CO_Treatment,before Pulse,before Pulse
+CY.12,CY_T_3.1,CY,1,Pulse,CY_D,3/4/17,D,before disturbance,LMD,CY_T_1,CY_Treatment,before Pulse,before Pulse
+CY.17,CY_T_5.1,CY,1,Pulse,CY_E,3/4/17,E,before disturbance,LMD,CY_T_1,CY_Treatment,before Pulse,before Pulse
+CY.18,CY_T_6.1,CY,1,Pulse,CY_F,3/4/17,F,before disturbance,LMD,CY_T_1,CY_Treatment,before Pulse,before Pulse
+IB.12,IB_T_3.1,IB,1,Pulse,IB_D,3/4/17,D,before disturbance,VLMD,IB_T_1,IB_Treatment,before Pulse,before Pulse
+IB.17,IB_T_5.1,IB,1,Pulse,IB_E,3/4/17,E,before disturbance,VLMD,IB_T_1,IB_Treatment,before Pulse,before Pulse
+IB.18,IB_T_6.1,IB,1,Pulse,IB_F,3/4/17,F,before disturbance,VLMD,IB_T_1,IB_Treatment,before Pulse,before Pulse
+IR.12,IR_T_3.1,IR,1,Pulse,IR_D,3/4/17,D,before disturbance,HMD,IR_T_1,IR_Treatment,before Pulse,before Pulse
+IR.17,IR_T_5.1,IR,1,Pulse,IR_E,3/4/17,E,before disturbance,HMD,IR_T_1,IR_Treatment,before Pulse,before Pulse
+IR.18,IR_T_6.1,IR,1,Pulse,IR_F,3/4/17,F,before disturbance,HMD,IR_T_1,IR_Treatment,before Pulse,before Pulse
+ST.12,ST_T_3.1,ST,1,Pulse,ST_D,3/4/17,D,before disturbance,LMD,ST_T_1,ST_Treatment,before Pulse,before Pulse
+ST.17,ST_T_5.1,ST,1,Pulse,ST_E,3/4/17,E,before disturbance,LMD,ST_T_1,ST_Treatment,before Pulse,before Pulse
+ST.18,ST_T_6.1,ST,1,Pulse,ST_F,3/4/17,F,before disturbance,LMD,ST_T_1,ST_Treatment,before Pulse,before Pulse
+AQ.13,AQ_C_1.1,AQ,1,Control,AQ_A,3/4/17,A,before disturbance,LMD,AQ_C_1,AQ_Control,Control,Control
+AQ.14,AQ_C_5.1,AQ,1,Control,AQ_B,3/4/17,B,before disturbance,LMD,AQ_C_1,AQ_Control,Control,Control
+AQ.15,AQ_C_6.1,AQ,1,Control,AQ_C,3/4/17,C,before disturbance,LMD,AQ_C_1,AQ_Control,Control,Control
+CO.13,CO_C_1.1,CO,1,Control,CO_A,3/4/17,A,before disturbance,VHMD,CO_C_1,CO_Control,Control,Control
+CO.14,CO_C_5.1,CO,1,Control,CO_B,3/4/17,B,before disturbance,VHMD,CO_C_1,CO_Control,Control,Control
+CO.15,CO_T_6.1,CO,1,Control,CO_C,3/4/17,C,before disturbance,VHMD,CO_C_1,CO_Control,Control,Control
+CY.13,CY_C_1.1,CY,1,Control,CY_A,3/4/17,A,before disturbance,LMD,CY_C_1,CY_Control,Control,Control
+CY.14,CY_C_5.1,CY,1,Control,CY_B,3/4/17,B,before disturbance,LMD,CY_C_1,CY_Control,Control,Control
+CY.15,CY_C_6.1,CY,1,Control,CY_C,3/4/17,C,before disturbance,LMD,CY_C_1,CY_Control,Control,Control
+IB.13,IB_C_1.1,IB,1,Control,IB_A,3/4/17,A,before disturbance,VLMD,IB_C_1,IB_Control,Control,Control
+IB.14,IB_C_5.1,IB,1,Control,IB_B,3/4/17,B,before disturbance,VLMD,IB_C_1,IB_Control,Control,Control
+IB.15,IB_C_6.1,IB,1,Control,IB_C,3/4/17,C,before disturbance,VLMD,IB_C_1,IB_Control,Control,Control
+IR.13,IR_C_1.1,IR,1,Control,IR_A,3/4/17,A,before disturbance,HMD,IR_C_1,IR_Control,Control,Control
+IR.14,IR_C_5.1,IR,1,Control,IR_B,3/4/17,B,before disturbance,HMD,IR_C_1,IR_Control,Control,Control
+IR.15,IR_C_6.1,IR,1,Control,IR_C,3/4/17,C,before disturbance,HMD,IR_C_1,IR_Control,Control,Control
+ST.13,ST_C_1.1,ST,1,Control,ST_A,3/4/17,A,before disturbance,LMD,ST_C_1,ST_Control,Control,Control
+ST.14,ST_C_5.1,ST,1,Control,ST_B,3/4/17,B,before disturbance,LMD,ST_C_1,ST_Control,Control,Control
+ST.15,ST_C_6.1,ST,1,Control,ST_C,3/4/17,C,before disturbance,LMD,ST_C_1,ST_Control,Control,Control
